@@ -65,8 +65,8 @@ Buffer::~Buffer()
 
 Buffer::Buffer(Buffer&& other) noexcept
     : vulkanContext{ other.vulkanContext }
-    , description{ other.description }
     , buffer{ other.buffer }
+    , description{ other.description }
     , stagingBuffer{ std::move(other.stagingBuffer) }
     , mappedMemory{ other.mappedMemory }
     , persistentMapping{ other.persistentMapping }
@@ -84,8 +84,8 @@ Buffer& Buffer::operator=(Buffer&& other) noexcept
     if (this != &other)
     {
         std::swap(vulkanContext, other.vulkanContext);
-        std::swap(description, other.description);
         std::swap(buffer, other.buffer);
+        std::swap(description, other.description);
         std::swap(stagingBuffer, other.stagingBuffer);
         std::swap(mappedMemory, other.mappedMemory);
         std::swap(persistentMapping, other.persistentMapping);
@@ -165,6 +165,6 @@ void Buffer::FillImpl(const std::span<const std::byte> span)
         Assert((description.usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT) == VK_BUFFER_USAGE_TRANSFER_DST_BIT);
 
         stagingBuffer->Fill(span);
-        BufferDetails::CopyBuffer(stagingBuffer->GetVkBuffer(), buffer, span.size(), device);
+        BufferDetails::CopyBuffer(stagingBuffer->Get(), buffer, span.size(), device);
     }
 }

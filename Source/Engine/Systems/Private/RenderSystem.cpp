@@ -3,6 +3,7 @@
 #include "Engine/EventSystem.hpp"
 #include "Engine/Render/SceneRenderer.hpp"
 #include "Engine/Render/Ui/UiRenderer.hpp"
+#include "Engine/Render/ComputeRenderer.hpp"
 #include "Engine/Render/Vulkan/VulkanContext.hpp"
 #include "Engine/Render/Vulkan/VulkanHelpers.hpp"
 
@@ -35,6 +36,7 @@ RenderSystem::RenderSystem(const Window& window, EventSystem& aEventSystem, cons
     : vulkanContext{ aVulkanContext }
     , eventSystem{ aEventSystem }
     , sceneRenderer{ std::make_unique<SceneRenderer>(eventSystem, vulkanContext) }
+    , computeRenderer{ std::make_unique<ComputeRenderer>(eventSystem, vulkanContext) }
     , uiRenderer{ std::make_unique<UiRenderer>(window, eventSystem, vulkanContext) }
 {
     using namespace RenderSystemDetails;
@@ -61,6 +63,7 @@ RenderSystem::~RenderSystem()
 void RenderSystem::Process(const float deltaSeconds)
 {
     sceneRenderer->Process(deltaSeconds);
+    computeRenderer->Process(deltaSeconds);
     uiRenderer->Process(deltaSeconds);
 }
 
@@ -84,7 +87,7 @@ void RenderSystem::Render()
 
     // Submit scene rendering commands
     const auto renderCommands = [&](VkCommandBuffer buffer) {
-        sceneRenderer->Render(frame);
+        computeRenderer->Render(frame);
         uiRenderer->Render(frame);
     };
 

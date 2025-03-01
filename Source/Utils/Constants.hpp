@@ -36,3 +36,12 @@ namespace Matrix4
 {
     constexpr auto identity = glm::mat4(1.0f);
 }
+
+namespace Color
+{
+    constexpr auto black = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    constexpr auto red = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    constexpr auto green = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+    constexpr auto blue = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+    constexpr auto magenta = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+}

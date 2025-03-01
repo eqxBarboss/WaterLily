@@ -169,11 +169,11 @@ void SceneRenderer::Render(const Frame& frame)
     const VkRect2D scissor = GetScissor(extent);
     vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
-    VkBuffer vertexBuffers[] = { scene->GetVertexBuffer().GetVkBuffer() };
+    VkBuffer vertexBuffers[] = { scene->GetVertexBuffer().Get() };
     VkDeviceSize offsets[] = { 0 };
     vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
 
-    vkCmdBindIndexBuffer(commandBuffer, scene->GetIndexBuffer().GetVkBuffer(), 0, VK_INDEX_TYPE_UINT32);
+    vkCmdBindIndexBuffer(commandBuffer, scene->GetIndexBuffer().Get(), 0, VK_INDEX_TYPE_UINT32);
 
     std::vector<VkDescriptorSet> descriptors = { uniformDescriptors[frame.index] };
     std::ranges::copy(scene->GetGlobalDescriptors(), std::back_inserter(descriptors));
@@ -181,7 +181,7 @@ void SceneRenderer::Render(const Frame& frame)
     vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline.GetLayout(),
         0, static_cast<uint32_t>(descriptors.size()), descriptors.data(), 0, nullptr);
 
-    vkCmdDrawIndexedIndirect(commandBuffer, indirectBuffer->GetVkBuffer(), 0, indirectDrawCount,
+    vkCmdDrawIndexedIndirect(commandBuffer, indirectBuffer->Get(), 0, indirectDrawCount,
         sizeof(VkDrawIndexedIndirectCommand));
 
     vkCmdEndRenderPass(commandBuffer);
@@ -191,8 +191,8 @@ void SceneRenderer::CreateGraphicsPipeline(std::vector<ShaderModule>&& shaderMod
 {
     using namespace VulkanHelpers;
 
-    std::vector layouts = { layout.GetVkDescriptorSetLayout(),
-        Scene::GetGlobalDescriptorSetLayout(*vulkanContext).GetVkDescriptorSetLayout() };
+    std::vector layouts = { layout.Get(),
+        Scene::GetGlobalDescriptorSetLayout(*vulkanContext).Get() };
 
     graphicsPipeline = GraphicsPipelineBuilder(*vulkanContext)
         .SetDescriptorSetLayouts(std::move(layouts))

@@ -32,7 +32,8 @@ namespace DeviceDetails
     static std::optional<uint32_t> FindGraphicsQueueFamilyIndex(const std::vector<VkQueueFamilyProperties>& queueFamilies)
     {
         const auto isGraphicsFamily = [](const VkQueueFamilyProperties& properties) {
-            return properties.queueFlags & VK_QUEUE_GRAPHICS_BIT;
+            // TODO: Handle compute queue separatelly
+            return properties.queueFlags & (VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_COMPUTE_BIT);
         };
 
         const auto it = std::ranges::find_if(queueFamilies, isGraphicsFamily);

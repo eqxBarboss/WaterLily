@@ -42,7 +42,7 @@ ImageView::ImageView(VkImage image, const ImageDescription& description, VkImage
 }
 
 ImageView::ImageView(const Image& image, VkImageAspectFlags aspectFlags, const VulkanContext& aVulkanContext)
-    : ImageView(image.GetVkImage(), image.GetDescription(), aspectFlags, aVulkanContext)
+    : ImageView(image.Get(), image.GetDescription(), aspectFlags, aVulkanContext)
 {}
 
 ImageView::~ImageView()

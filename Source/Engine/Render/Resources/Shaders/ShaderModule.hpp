@@ -7,7 +7,8 @@ class VulkanContext;
 enum class ShaderType
 {
     eVertex,
-    eFragment
+    eFragment,
+    eCompute,
 };
 
 class ShaderModule

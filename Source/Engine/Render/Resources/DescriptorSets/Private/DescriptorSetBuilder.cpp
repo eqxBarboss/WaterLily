@@ -29,7 +29,7 @@ std::tuple<VkDescriptorSet, DescriptorSetLayout> DescriptorSetBuilder::Build()
         layout = layoutBuilder->Build();
     }
 
-    const VkDescriptorSet set = allocator->Allocate(layout.GetVkDescriptorSetLayout());
+    const VkDescriptorSet set = allocator->Allocate(layout.Get());
 
     // Hack: resolve index to pointers (see appropriate bind functions)
     std::ranges::for_each(descriptorWrites, [&](VkWriteDescriptorSet& descriptorWrite) {
@@ -62,10 +62,10 @@ DescriptorSetBuilder& DescriptorSetBuilder::Bind(const uint32_t binding, const B
 }
 
 DescriptorSetBuilder& DescriptorSetBuilder::Bind(const uint32_t binding, const ImageView& imageView,
-    const VkDescriptorType type, const VkShaderStageFlags shaderStages)
+    const VkImageLayout layout, const VkDescriptorType type, const VkShaderStageFlags shaderStages)
 {
     AddBinding(binding, type, shaderStages);
-    Bind(binding, imageView);
+    Bind(binding, imageView, layout);
 
     return *this;
 }
@@ -90,7 +90,7 @@ DescriptorSetBuilder& DescriptorSetBuilder::Bind(const uint32_t binding, const I
 
 DescriptorSetBuilder& DescriptorSetBuilder::Bind(const uint32_t binding, const Buffer& buffer)
 {
-    bufferInfos.emplace_back(buffer.GetVkBuffer(), 0, buffer.GetDescription().size);
+    bufferInfos.emplace_back(buffer.Get(), 0, buffer.GetDescription().size);
 
     // Hack: store index (1-based) of the element in the bufferInfos vector and resolve it to the actual pointer in the
     // Build() function to handle possible buffer reallocations
@@ -100,10 +100,10 @@ DescriptorSetBuilder& DescriptorSetBuilder::Bind(const uint32_t binding, const B
     return *this;
 }
 
-DescriptorSetBuilder& DescriptorSetBuilder::Bind(const uint32_t binding, const ImageView& imageView)
+DescriptorSetBuilder& DescriptorSetBuilder::Bind(const uint32_t binding, const ImageView& imageView,
+    const VkImageLayout layout)
 {
-    // TODO: Get rid of hardcoded layout here as we will need to write to images in shaders
-    imageInfos.emplace_back(VK_NULL_HANDLE, imageView.GetVkImageView(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+    imageInfos.emplace_back(VK_NULL_HANDLE, imageView.GetVkImageView(), layout);
 
     // Hack: store index (1-based) of the element in the imageInfos vector and resolve it to the actual pointer in the
     // Build() function to handle possible buffer reallocations

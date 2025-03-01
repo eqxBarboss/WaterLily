@@ -15,6 +15,7 @@ class VulkanContext;
 class Window;
 class EventSystem;
 class SceneRenderer;
+class ComputeRenderer;
 class UiRenderer;
 
 class RenderSystem : public System
@@ -44,6 +45,7 @@ private:
     EventSystem& eventSystem;
 
     std::unique_ptr<SceneRenderer> sceneRenderer;
+    std::unique_ptr<ComputeRenderer> computeRenderer;
     std::unique_ptr<UiRenderer> uiRenderer;
     
     std::vector<Frame> frames;

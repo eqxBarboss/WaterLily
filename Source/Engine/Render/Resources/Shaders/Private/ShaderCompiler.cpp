@@ -14,8 +14,9 @@ namespace ShaderCompilerDetails
     static bool initialized = false;
 
     static std::unordered_map<ShaderType, EShLanguage> glslangStages = {
-        { ShaderType::eVertex, EShLangVertex},
-        { ShaderType::eFragment, EShLangFragment},
+        { ShaderType::eVertex, EShLangVertex },
+        { ShaderType::eFragment, EShLangFragment },
+        { ShaderType::eCompute, EShLangCompute },
     };
 }
 

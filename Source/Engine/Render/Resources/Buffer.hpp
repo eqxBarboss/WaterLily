@@ -32,16 +32,6 @@ public:
     void CreateStagingBuffer();
     void DestroyStagingBuffer();
 
-    bool IsValid() const
-    {
-        return buffer != VK_NULL_HANDLE;
-    }
-
-    const BufferDescription& GetDescription() const
-    {
-        return description;
-    }
-
     template <typename T>
     void Fill(const std::span<const T> data);
 
@@ -50,9 +40,14 @@ public:
     std::span<std::byte> MapMemory(bool persistentMapping = false) const;
     void UnmapMemory() const;
 
-    VkBuffer GetVkBuffer() const
+    VkBuffer Get() const
     {
         return buffer;
+    }
+    
+    const BufferDescription& GetDescription() const
+    {
+        return description;
     }
 
     const Buffer* GetStagingBuffer() const
@@ -64,15 +59,20 @@ public:
     {
         return mappedMemory;
     }
+    
+    bool IsValid() const
+    {
+        return buffer != VK_NULL_HANDLE;
+    }
 
 private:
     void FillImpl(const std::span<const std::byte> span);
 
     const VulkanContext* vulkanContext = nullptr;
 
-    BufferDescription description = {};
-
     VkBuffer buffer = VK_NULL_HANDLE;
+    
+    BufferDescription description = {};
 
     std::unique_ptr<Buffer> stagingBuffer;
 

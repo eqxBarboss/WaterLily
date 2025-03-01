@@ -1,16 +1,12 @@
 #pragma once
 
-#include "Utils/DataStructures.hpp"
-#include "Engine/Render/Resources/ResourceHelpers.hpp"
-
 #include <volk.h>
 
 class VulkanContext;
-class Buffer;
 
 struct ImageDescription
 {
-    Extent2D extent = {};
+    VkExtent3D extent = {};
     uint32_t mipLevelsCount = 1;
     VkSampleCountFlagBits samples = VK_SAMPLE_COUNT_1_BIT;
     VkFormat format = {};
@@ -31,29 +27,26 @@ public:
 
     Image(Image&& other) noexcept;
     Image& operator=(Image&& other) noexcept;
-
-    void FillMipLevel0(const Buffer& buffer, bool generateOtherMipLevels = false) const;
+    
+    VkImage Get() const
+    {
+        return image;
+    }
 
     const ImageDescription& GetDescription() const
     {
         return description;
     }
-
-    VkImage GetVkImage() const
+    
+    bool IsValid() const
     {
-        return image;
+        return image != VK_NULL_HANDLE;
     }
-
+    
 private:
-    void TransitionLayout(VkCommandBuffer commandBuffer, ImageLayoutTransition transition) const;
-    void TransitionLayout(VkCommandBuffer commandBuffer, ImageLayoutTransition transition, uint32_t baseMipLevel, 
-        uint32_t mipLevelsCount = 1) const;
-
-    void GenerateMipLevelsFromLevel0(VkCommandBuffer commandBuffer) const;
-
     const VulkanContext* vulkanContext = nullptr;
 
-    ImageDescription description = {};
-
     VkImage image = VK_NULL_HANDLE;
+    
+    ImageDescription description = {};
 };

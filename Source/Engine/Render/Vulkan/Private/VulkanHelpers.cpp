@@ -193,7 +193,7 @@ void VulkanHelpers::DestroyFramebuffers(std::vector<VkFramebuffer>& framebuffers
 std::unique_ptr<Image> VulkanHelpers::CreateColorAttachment(VkExtent2D extent, const VulkanContext& vulkanContext)
 {
     ImageDescription imageDescription{
-        .extent = { static_cast<int>(extent.width), static_cast<int>(extent.height) },
+        .extent = { extent.width, extent.height, 1 },
         .mipLevelsCount = 1,
         .samples = vulkanContext.GetDevice().GetMaxSampleCount(),
         .format = vulkanContext.GetSwapchain().GetSurfaceFormat().format,
@@ -206,7 +206,7 @@ std::unique_ptr<Image> VulkanHelpers::CreateColorAttachment(VkExtent2D extent, c
 std::unique_ptr<Image> VulkanHelpers::CreateDepthAttachment(VkExtent2D extent, const VulkanContext& vulkanContext)
 {
     ImageDescription imageDescription{
-        .extent = { static_cast<int>(extent.width), static_cast<int>(extent.height) },
+        .extent = { extent.width, extent.height, 1 },
         .mipLevelsCount = 1,
         .samples = vulkanContext.GetDevice().GetMaxSampleCount(),
         .format = VulkanConfig::depthImageFormat,

@@ -16,6 +16,9 @@ namespace ShaderModuleDetails
             case ShaderType::eFragment:
                 result = VK_SHADER_STAGE_FRAGMENT_BIT;
                 break;
+            case ShaderType::eCompute:
+                result = VK_SHADER_STAGE_COMPUTE_BIT;
+                break;
         }
 
         return result;

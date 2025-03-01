@@ -10,7 +10,7 @@ public:
 
     const VkDescriptorSetLayoutBinding& GetBinding(uint32_t index) const;
 
-    VkDescriptorSetLayout GetVkDescriptorSetLayout() const
+    VkDescriptorSetLayout Get() const
     {
         return layout;
     }
