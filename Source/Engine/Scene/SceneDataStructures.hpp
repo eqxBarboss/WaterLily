@@ -5,11 +5,6 @@
 
 #include <volk.h>
 
-struct PushConstants
-{
-    uint32_t tbd;
-};
-
 struct Primitive
 {
     uint32_t firstIndex = 0;

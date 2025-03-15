@@ -5,8 +5,8 @@ layout(location = 1) in vec4 inTangent;
 layout(location = 2) in vec2 inUv;
 layout(location = 3) in vec4 inColor;
 
-layout(set = 1, binding = 6) uniform texture2D texImage;
-layout(set = 1, binding = 7) uniform sampler texSampler;
+layout(set = 0, binding = 6) uniform texture2D texImage;
+layout(set = 0, binding = 7) uniform sampler texSampler;
 
 layout(location = 0) out vec4 outColor;
 

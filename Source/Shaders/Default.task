@@ -8,27 +8,27 @@
 
 layout(local_size_x = TASK_WG_SIZE, local_size_y = 1, local_size_z = 1) in;
 
-layout(set = 0, binding = 0) readonly uniform Ubo 
+layout(push_constant) uniform Globals
 {
-    UniformBufferObject ubo; 
+    PushConstants globals;
 };
 
-layout(set = 1, binding = 1, std430) readonly buffer Transforms 
+layout(set = 0, binding = 1, std430) readonly buffer Transforms 
 {
     mat4 transforms[]; 
 };
 
-layout(set = 1, binding = 3, std430) readonly buffer Meshlets 
+layout(set = 0, binding = 3, std430) readonly buffer Meshlets 
 {
     Meshlet meshlets[]; 
 };
 
-layout(set = 1, binding = 4, std430) readonly buffer Primitives 
+layout(set = 0, binding = 4, std430) readonly buffer Primitives 
 {
     Primitive primitives[]; 
 };
 
-layout(set = 1, binding = 5, std430) readonly buffer Draws 
+layout(set = 0, binding = 5, std430) readonly buffer Draws 
 {
     Draw draws[]; 
 };

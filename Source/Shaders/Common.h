@@ -20,7 +20,7 @@ namespace gpu
 #extension GL_EXT_shader_16bit_storage: require
 #endif
 
-struct UniformBufferObject 
+struct PushConstants 
 {
     mat4 view;
     mat4 projection;

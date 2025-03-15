@@ -1,19 +1,11 @@
 #pragma once
 
-#include <volk.h>
-
-#include "Shaders/Common.h"
 #include "Engine/Render/Renderer.hpp"
-#include "Engine/Render/RenderOptions.hpp"
-#include "Engine/Render/Vulkan/RenderPass.hpp"
-#include "Engine/Render/Vulkan/Buffer/Buffer.hpp"
-#include "Engine/Render/Vulkan/Image/RenderTarget.hpp"
-#include "Engine/Render/Vulkan/Pipelines/Pipeline.hpp"
-#include "Engine/Render/Vulkan/Shaders/ShaderModule.hpp"
-#include "Engine/Render/Vulkan/DescriptorSets/DescriptorSetLayout.hpp"
+#include "Engine/Render/RenderContext.hpp"
 
 class VulkanContext;
 class EventSystem;
+class RenderStage;
 class Scene;
 
 namespace ES
@@ -42,13 +34,8 @@ public:
     void Render(const Frame& frame) override;
 
 private:
-    void CreateMeshPipeline(std::vector<ShaderModule>&& shaderModules);
-    void CreateVertexPipeline(std::vector<ShaderModule>&& shaderModules);
-
-    void CreateRenderTargetsAndFramebuffers();
-    void DestroyRenderTargetsAndFramebuffers();
-    
-    void SetGraphicsPipeline(GraphicsPipelineType graphicsPipelineType);
+    void CreateRenderTargets();
+    void DestroyRenderTargets();
 
     void OnBeforeSwapchainRecreated(const ES::BeforeSwapchainRecreated& event);
     void OnSwapchainRecreated(const ES::SwapchainRecreated& event);
@@ -57,29 +44,12 @@ private:
     void OnSceneClose(const ES::SceneClosed& event);
 
     const VulkanContext* vulkanContext = nullptr;
-    RenderOptions* renderOptions = nullptr;
 
     EventSystem* eventSystem = nullptr;
-
-    RenderPass renderPass;
     
-    Pipeline meshPipeline;
-    Pipeline vertexPipeline;
-
-    RenderTarget colorTarget;
-    RenderTarget depthTarget;
-
-    std::vector<VkFramebuffer> framebuffers;
-
-    std::vector<Buffer> uniformBuffers;
-
-    std::vector<VkDescriptorSet> uniformDescriptors;
-    DescriptorSetLayout layout;
-
-    gpu::UniformBufferObject ubo = { .view = glm::mat4(), .projection = glm::mat4() };
+    RenderContext renderContext;
+    
+    std::unique_ptr<RenderStage> forwardStage;
 
     Scene* scene = nullptr;
-    
-    GraphicsPipelineType graphicsPipelineType;
-    Pipeline* graphicsPipeline = nullptr;
 };

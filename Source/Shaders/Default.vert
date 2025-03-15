@@ -9,12 +9,12 @@ layout(location = 1) in vec4 inNormalAndV;
 layout(location = 2) in vec4 inTangent;
 layout(location = 3) in vec4 inColor;
 
-layout(set = 0, binding = 0) uniform Ubo 
+layout(push_constant) uniform Globals
 {
-    UniformBufferObject ubo; 
+    PushConstants globals;
 };
 
-layout(set = 1, binding = 1, std430) readonly buffer Transforms 
+layout(set = 0, binding = 1, std430) readonly buffer Transforms 
 {
     mat4 transforms[]; 
 };
@@ -34,7 +34,7 @@ void main()
 
     mat4 transform = transforms[gl_InstanceIndex];
     
-    vec4 pos = ubo.projection * ubo.view * transform * vec4(position, 1.0);
+    vec4 pos = globals.projection * globals.view * transform * vec4(position, 1.0);
 
     normal = mat3(transform) * normal;
 

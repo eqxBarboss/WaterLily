@@ -9,42 +9,42 @@
 
 layout(local_size_x = MESH_WG_SIZE, local_size_y = 1, local_size_z = 1) in;
 
-layout(set = 0, binding = 0) readonly uniform Ubo 
+layout(push_constant) uniform Globals
 {
-    UniformBufferObject ubo; 
+    PushConstants globals;
 };
 
-layout(set = 1, binding = 0, std430) readonly buffer Vertices 
+layout(set = 0, binding = 0, std430) readonly buffer Vertices 
 {
     Vertex vertices[]; 
 };
 
-layout(set = 1, binding = 1, std430) readonly buffer Transforms 
+layout(set = 0, binding = 1, std430) readonly buffer Transforms 
 {
     mat4 transforms[]; 
 };
 
-layout(set = 1, binding = 2, std430) readonly buffer MeshletData8 
+layout(set = 0, binding = 2, std430) readonly buffer MeshletData8 
 {
     uint8_t meshletData8[];
 };
 
-layout(set = 1, binding = 2, std430) readonly buffer MeshletData16 
+layout(set = 0, binding = 2, std430) readonly buffer MeshletData16 
 {
     uint16_t meshletData16[];
 };
 
-layout(set = 1, binding = 2, std430) readonly buffer MeshletData32
+layout(set = 0, binding = 2, std430) readonly buffer MeshletData32
 {
     uint meshletData32[];
 };
 
-layout(set = 1, binding = 3, std430) readonly buffer Meshlets 
+layout(set = 0, binding = 3, std430) readonly buffer Meshlets 
 {
     Meshlet meshlets[]; 
 };
 
-layout(set = 1, binding = 4, std430) readonly buffer Primitives 
+layout(set = 0, binding = 4, std430) readonly buffer Primitives 
 {
     Primitive primitives[]; 
 };
@@ -91,7 +91,7 @@ void main()
         vec4 color = vec4(hashColor, 1.0);
 
         // TODO: Optimize vertex inputs and decompose transform
-        mat4 mvp = ubo.projection * ubo.view * transforms[primitives[payload.primitiveIndex].transformIndex];
+        mat4 mvp = globals.projection * globals.view * transforms[primitives[payload.primitiveIndex].transformIndex];
 
         vec4 clip = mvp * vec4(position, 1.0);
 

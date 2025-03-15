@@ -24,42 +24,27 @@ public:
     Scene& operator=(const Scene&) = delete;
 
     Scene(Scene&&) = delete;
-    Scene& operator=(Scene&&) = delete;    
-
-    const Buffer& GetVertexBuffer() const
-    {
-        return vertexBuffer;
-    }
-
-    const Buffer& GetIndexBuffer() const
-    {
-        return indexBuffer;
-    }
-
-    const Buffer& GetIndirectBuffer() const
-    {
-        return indirectBuffer;
-    }
-
-    const std::vector<VkDescriptorSet>& GetGlobalDescriptors() const
-    {
-        return globalDescriptors;
-    }
-
-    uint32_t GetDrawCount() const
-    {
-        return drawCount;
-    }
-
-    uint32_t GetIndirectDrawCount() const
-    {
-        return indirectDrawCount;
-    }
+    Scene& operator=(Scene&&) = delete;
 
     CameraComponent& GetCamera()
     {
         return camera;
     }
+    
+    Buffer vertexBuffer;
+    Buffer indexBuffer;
+    Buffer transformBuffer;
+    Buffer meshletDataBuffer;
+    Buffer meshletBuffer;
+    Buffer primitiveBuffer;
+    Buffer drawBuffer;
+    Buffer indirectBuffer;
+    
+    uint32_t drawCount = 0;
+    uint32_t indirectDrawCount = 0;
+    
+    std::vector<VkDescriptorSet> globalDescriptors;
+    DescriptorSetLayout globalDescriptorSetLayout;
 
 private:
     void InitFromGltfScene();
@@ -70,22 +55,7 @@ private:
 
     const VulkanContext& vulkanContext;
 
-    Buffer vertexBuffer;
-    Buffer indexBuffer;
-    Buffer transformBuffer;
-    Buffer meshletDataBuffer;
-    Buffer meshletBuffer;
-    Buffer primitiveBuffer;
-    Buffer drawBuffer;
-    Buffer indirectBuffer;
-
     Texture texture;
-
-    std::vector<VkDescriptorSet> globalDescriptors;
-    DescriptorSetLayout globalDescriptorSetLayout;
-
-    uint32_t drawCount = 0;
-    uint32_t indirectDrawCount = 0;
 
     CameraComponent camera = {};
     

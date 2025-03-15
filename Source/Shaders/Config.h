@@ -5,7 +5,7 @@
 #define MESH_WG_SIZE 64
 
 #define MAX_MESHLET_VERTICES 64
-#define MAX_MESHLET_TRIANGLES 64
+#define MAX_MESHLET_TRIANGLES 96
 
 #ifdef __cplusplus
 #pragma once
